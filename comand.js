@@ -16,7 +16,7 @@ const rl = readline.createInterface({
 rl.on('line', (line) => {
   if(line === 's'){
     rl.question('请输入要执行的js文件: ', name=>{
-      fs.writeFileSync('config.json', JSON.stringify({...config, files: [`./${name}.js`]}));
+      fs.writeFileSync('config.json', JSON.stringify({...config, files: [`./src/${name}`]}));
     })
   }
 });

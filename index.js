@@ -1,4 +1,4 @@
-console.log('hello, index');
+console.log(111);
 
 function log(v){
   console.dir(v, {depth: null});
@@ -7,6 +7,8 @@ function log(v){
 const MY_IMMER = Symbol('my-immer1')
 
 const isPlainObject = value => {
+  log(typeof value);
+  log({}.toString.call(value))
   if (
     !value ||
     typeof value !== 'object' ||
@@ -14,12 +16,18 @@ const isPlainObject = value => {
   ) {
     return false
   }
-  var proto = Object.getPrototypeOf(value)
-  console.log('proto',proto)
+  var proto = Object.getPrototypeOf(value);
+
   if (proto === null) {
+    console.log('null');
     return true
   }
-  var Ctor = hasOwnProperty.call(proto, 'constructor') && proto.constructor
+  var Ctor = hasOwnProperty.call(proto, 'constructor') && proto.constructor;
+  log(Ctor)
+  log(typeof Ctor == 'function');
+  log(Ctor instanceof Ctor);
+  log(Function.prototype.toString.call(Ctor));
+  log(Function.prototype.toString.call(Object))
   return (
     typeof Ctor == 'function' &&
     Ctor instanceof Ctor &&
@@ -27,7 +35,10 @@ const isPlainObject = value => {
       Function.prototype.toString.call(Object)
   )
 }
-log(isPlainObject({}));
+let a = {};
+log(a);
+
+log(isPlainObject(a));
 
 // const isProxy = value => !!value && !!value[MY_IMMER]
 
