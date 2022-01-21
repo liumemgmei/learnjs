@@ -1,6 +1,6 @@
 console.log(111);
 
-function log(v){
+export function log(v){
   console.dir(v, {depth: null});
 }
 
@@ -36,9 +36,9 @@ const isPlainObject = value => {
   )
 }
 let a = {};
-log(a);
+// log(a);
 
-log(isPlainObject(a));
+// log(isPlainObject(a));
 
 // const isProxy = value => !!value && !!value[MY_IMMER]
 
