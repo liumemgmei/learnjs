@@ -1,6 +1,6 @@
 {
   "events": {
   },
-  "delay": 1000,
+  "delay": 300,
   "ext": "js,ts"
 }

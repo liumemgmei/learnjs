@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "compile":"ts-node ./comand.js",
+    "compile": "ts-node ./comand.js",
     "start": "nodemon --exec \"ts-node\" comand.js"
   },
   "keywords": [],
@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "cross-env": "^7.0.3",
+    "lodash": "^4.17.21",
     "nodemon": "^2.0.15"
   },
   "devDependencies": {
