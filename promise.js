@@ -15,7 +15,8 @@ function noop() {}
 
 // 表示一个异步最终的状态及其结果值
 function Prom(fn) {
-  console.log(this, this instanceof null, 'this')
+  
+  // console.log(this, this instanceof Prom, 'this')
   // this.
   // this._state = 0
   // var prv ='meng';
@@ -24,8 +25,56 @@ function Prom(fn) {
   // doResolve(fn, this)
 }
 
+class A {
+  constructor(props = {}) {
+    const {name} =props;
+    this._name = name;
+  }
+  get name() {
+    return this._name +'haha'
+  }
+  set name(t) {
+    this._name = t+'lala'
+  }
+  a(){
+    // log(this.name)
+  }
+  b=()=>{
+    // log(this.name)
+  }
+}
+A.prototype.d = function() {
+  console.log(this.name);
+}
+
+class B extends A {
+  constructor(props) {
+    super(props);
+  }
+}
+let a = new A({name:'animal'});
+let b = new B({name:'dog'});
+a.name = '123'
+a.d();
+function Animal() { }
 
 
+
+function first() {
+  second(1)
+}
+
+function second(l) {
+  log(l)
+}
+
+
+first();
+
+
+
+a.b.apply({name: 'liumm'});
+b.b();
 
 function doResolve (fn, promise) {
   var done = false;
@@ -37,3 +86,6 @@ function tryCallTwo() {
 let t = new Prom(()=>{});
 let tt = Prom(()=>{});
 // log(t);
+
+log(g)
+let g ='gggg'

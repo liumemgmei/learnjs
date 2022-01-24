@@ -1,10 +1,27 @@
 console.log(111);
 
-export function log(v){
+
+
+const MY_IMMER = Symbol('my-immer1')
+
+export function logv(v){
   console.dir(v, {depth: null});
 }
 
-const MY_IMMER = Symbol('my-immer1')
+var getStackTrace = function () {
+  var obj = {};
+  Error.captureStackTrace(obj, getStackTrace);
+  return obj.stack;
+};
+export function log(v){
+  var stack = getStackTrace() || ""
+  var matchResult = stack.match(/\(.*?\)/g) || []
+  var line = matchResult[1] || ""
+ 
+
+  logv(arguments[0])
+  console.log('----' + line.replace("(", "").replace(")", ""));
+};
 
 const isPlainObject = value => {
   log(typeof value);
