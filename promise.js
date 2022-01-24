@@ -87,5 +87,4 @@ let t = new Prom(()=>{});
 let tt = Prom(()=>{});
 // log(t);
 
-log(g)
 let g ='gggg'
