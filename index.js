@@ -24,8 +24,8 @@ export function log(v){
 };
 
 const isPlainObject = value => {
-  log(typeof value);
-  log({}.toString.call(value))
+  // log(typeof value);
+  // log({}.toString.call(value))
   if (
     !value ||
     typeof value !== 'object' ||
@@ -40,11 +40,11 @@ const isPlainObject = value => {
     return true
   }
   var Ctor = hasOwnProperty.call(proto, 'constructor') && proto.constructor;
-  log(Ctor)
-  log(typeof Ctor == 'function');
-  log(Ctor instanceof Ctor);
-  log(Function.prototype.toString.call(Ctor));
-  log(Function.prototype.toString.call(Object))
+  // log(Ctor)
+  // log(typeof Ctor == 'function');
+  // log(Ctor instanceof Ctor);
+  // log(Function.prototype.toString.call(Ctor));
+  // log(Function.prototype.toString.call(Object))
   return (
     typeof Ctor == 'function' &&
     Ctor instanceof Ctor &&
@@ -57,74 +57,74 @@ let a = {};
 
 // log(isPlainObject(a));
 
-// const isProxy = value => !!value && !!value[MY_IMMER]
+const isProxy = value => !!value && !!value[MY_IMMER]
 
-// function produce(baseState, fn) {
-//   const proxies = new Map()
-//   const copies = new Map()
+function produce(baseState, fn) {
+  const proxies = new Map()
+  const copies = new Map()
 
-//   const objectTraps = {
-//     get(target, key) {
-//       if (key === MY_IMMER) return target
-//       const data = copies.get(target) || target
-//       return getProxy(data[key])
-//     },
-//     set(target, key, val) {
-//       const copy = getCopy(target)
-//       const newValue = getProxy(val)
-//       // 这里的判断用于拿 proxy 的 target
-//       // 否则直接 copy[key] = newValue 的话外部拿到的对象是个 proxy
-//       copy[key] = isProxy(newValue) ? newValue[MY_IMMER] : newValue
-//       return true
-//     }
-//   }
+  const objectTraps = {
+    get(target, key) {
+      if (key === MY_IMMER) return target
+      const data = copies.get(target) || target
+      return getProxy(data[key])
+    },
+    set(target, key, val) {
+      const copy = getCopy(target)
+      const newValue = getProxy(val)
+      // 这里的判断用于拿 proxy 的 target
+      // 否则直接 copy[key] = newValue 的话外部拿到的对象是个 proxy
+      copy[key] = isProxy(newValue) ? newValue[MY_IMMER] : newValue
+      return true
+    }
+  }
 
-//   const getProxy = data => {
-//     if (isProxy(data)) {
-//       return data
-//     }
-//     if (isPlainObject(data) || Array.isArray(data)) {
-//       if (proxies.has(data)) {
-//         return proxies.get(data)
-//       }
-//       const proxy = new Proxy(data, objectTraps)
-//       proxies.set(data, proxy)
-//       return proxy
-//     }
-//     return data
-//   }
+  const getProxy = data => {
+    if (isProxy(data)) {
+      return data
+    }
+    if (isPlainObject(data) || Array.isArray(data)) {
+      if (proxies.has(data)) {
+        return proxies.get(data)
+      }
+      const proxy = new Proxy(data, objectTraps)
+      proxies.set(data, proxy)
+      return proxy
+    }
+    return data
+  }
 
-//   const getCopy = data => {
-//     if (copies.has(data)) {
-//       return copies.get(data)
-//     }
-//     const copy = Array.isArray(data) ? data.slice() : { ...data }
-//     copies.set(data, copy)
-//     return copy
-//   }
+  const getCopy = data => {
+    if (copies.has(data)) {
+      return copies.get(data)
+    }
+    const copy = Array.isArray(data) ? data.slice() : { ...data }
+    copies.set(data, copy)
+    return copy
+  }
 
-//   const isChange = data => {
-//     if (proxies.has(data) || copies.has(data)) return true
-//   }
+  const isChange = data => {
+    if (proxies.has(data) || copies.has(data)) return true
+  }
 
-//   const finalize = data => {
-//     if (isPlainObject(data) || Array.isArray(data)) {
-//       if (!isChange(data)) {
-//         return data
-//       }
-//       const copy = getCopy(data)
-//       Object.keys(copy).forEach(key => {
-//         copy[key] = finalize(copy[key])
-//       })
-//       return copy
-//     }
-//     return data
-//   }
+  const finalize = data => {
+    if (isPlainObject(data) || Array.isArray(data)) {
+      if (!isChange(data)) {
+        return data
+      }
+      const copy = getCopy(data)
+      Object.keys(copy).forEach(key => {
+        copy[key] = finalize(copy[key])
+      })
+      return copy
+    }
+    return data
+  }
 
-//   const proxy = getProxy(baseState)
-//   fn(proxy)
-//   return finalize(baseState)
-// }
+  const proxy = getProxy(baseState)
+  fn(proxy)
+  return finalize(baseState)
+}
 
 // const state = {
 //   info: {
@@ -138,13 +138,15 @@ let a = {};
 //   data: [1]
 // }
 
-// const data = produce(state, draftState => {
-//   draftState.info.age = 262
-//   draftState.info.career.first.name = '1'
-// })
+const state = [{a: 1,b: 2}]
+const data = produce(state, draftState => {
+  state[0].a ='12'
+  // draftState.info.age = 262
+  // draftState.info.career.first.name = '1'
+})
 
 
 
-// // console.log(data);
-// // console.dir(state,{depth: null});
+ console.log(data);
+ console.dir(state,{depth: null});
 // // console.log(data.data === state.data)
